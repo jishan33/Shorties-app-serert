@@ -1,9 +1,9 @@
 class Note < ApplicationRecord
   after_initialize :set_defaults, unless: :persisted?
   validates :title, presence: true
-  validates_length_of :title, in: 5..100
+  validates_length_of :title, in: 2..100
   validates :body, presence: true
-  validates_length_of :body, minimum: 10
+  validates_length_of :body, minimum: 2
 
   validates :public_share, inclusion: [true, false] 
   validates :completed, inclusion: [true, false] 
