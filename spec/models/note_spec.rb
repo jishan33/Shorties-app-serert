@@ -9,9 +9,9 @@ RSpec.describe Note, type: :model do
     end 
 
     it { expect(subject).to validate_presence_of(:title) }
-    it { should validate_length_of(:title).is_at_least(5).is_at_most(100) }
+    it { should validate_length_of(:title).is_at_least(2).is_at_most(100) }
     it { expect(subject).to validate_presence_of(:body) }
-    it { should validate_length_of(:body).is_at_least(10) }
+    it { should validate_length_of(:body).is_at_least(2) }
     it { expect(subject).to validate_inclusion_of(:public_share).in_array([true,false])}
     it { expect(subject).to validate_inclusion_of(:completed).in_array([true,false])}
   end
