@@ -1,0 +1,9 @@
+example_id                               | status  | run_time        |
+---------------------------------------- | ------- | --------------- |
+./spec/models/category_note_spec.rb[1:1] | pending | 0.00001 seconds |
+./spec/models/category_spec.rb[1:1]      | pending | 0 seconds       |
+./spec/models/cohort_spec.rb[1:1]        | pending | 0.00005 seconds |
+./spec/models/note_spec.rb[1:1:1]        | passed  | 0.03544 seconds |
+./spec/models/note_user_spec.rb[1:1]     | pending | 0.00001 seconds |
+./spec/models/user_cohort_spec.rb[1:1]   | pending | 0.00002 seconds |
+./spec/models/user_spec.rb[1:1]          | pending | 0 seconds       |
