@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :cohort do
-    name { "MyString" }
-    user { nil }
+    sequence(:name) { |n| "Cohort-#{n}" }
+    association :user
   end
 end

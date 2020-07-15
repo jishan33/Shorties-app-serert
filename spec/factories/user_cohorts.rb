@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user_cohort do
-    cohort { nil }
-    user { nil }
+    cohort 
+    user
   end
 end
