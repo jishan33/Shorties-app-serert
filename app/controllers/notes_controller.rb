@@ -3,4 +3,5 @@ class NotesController < ApplicationController
     notes = Note.all
     render json: {notes: notes}, status: 200
   end 
+
 end

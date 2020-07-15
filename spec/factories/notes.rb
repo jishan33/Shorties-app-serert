@@ -3,8 +3,7 @@ FactoryBot.define do
     sequence :title do |n| 
      "Factory test Note no. #{n}"
     end
-    # title { "test-title" }
-    body { "test-bodyt" }
+    body { "test-body" }
     public_share { false }
     completed { false }
 
