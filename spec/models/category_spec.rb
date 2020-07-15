@@ -10,6 +10,7 @@ RSpec.describe Category, type: :model do
 
     it { expect(subject).to validate_presence_of(:name) }
     it { should validate_length_of(:name).is_at_least(5).is_at_most(35) }
+    it { expect(subject).to validate_uniqueness_of(:name) }
   end
 
   context "associations" do
