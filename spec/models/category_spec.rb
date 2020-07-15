@@ -1,5 +1,19 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Category, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject { build(:category) }
+
+  context "validation" do
+    it "has a valid factory" do
+      expect(build(:category)).to be_valid
+    end
+
+    it { expect(subject).to validate_presence_of(:name) }
+    it { should validate_length_of(:name).is_at_least(5).is_at_most(35) }
+    it { expect(subject).to validate_uniqueness_of(:name) }
+  end
+
+  context "associations" do
+    it { expect(subject).to have_many(:notes).through(:category_notes) }
+  end
 end

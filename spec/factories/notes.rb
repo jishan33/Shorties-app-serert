@@ -1,9 +1,14 @@
 FactoryBot.define do
   factory :note do
-    user { nil }
-    title { "MyString" }
-    body { "MyText" }
+    title { "test-title" }
+    body { "test-bodyt" }
     public_share { false }
     completed { false }
+
+    association :user
+
+    trait :invalid do
+      title { nil }
+    end
   end
 end
