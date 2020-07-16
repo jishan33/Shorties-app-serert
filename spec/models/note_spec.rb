@@ -18,8 +18,9 @@ RSpec.describe Note, type: :model do
 
   context "associations" do 
     it { expect(subject).to have_many(:categories).through(:category_notes) }
+
     it { expect(subject).to belong_to(:user)}
-    it { expect(subject).to have_many(:note_users) }
+    it { expect(subject).to have_many(:users) }
   end
 
 end
