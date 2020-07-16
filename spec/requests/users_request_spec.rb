@@ -43,5 +43,38 @@ RSpec.describe "Users", type: :request do
     end
   end
 
-  
+  describe "PUT #update" do
+    before(:example) do
+      @user = create(:user)
+      @updated_name = 'Updated User'
+      put "/users/#{@user.id}", params: { user: { username: @updated_name } }, headers: authenticated_header
+    end
+
+    it "has a http no content response status" do
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it "updates user in db" do
+      expect(User.find(@user.id).username).to eq(@updated_name)
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before(:example) do
+      @user = create(:user)
+      delete "/users/#{@user.id}", headers: authenticated_header
+    end
+
+    it "has a no_content status" do
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it "user removed from db" do
+    puts "-----------------------------------------------"
+    puts User.count
+    puts User.last.username
+      expect(User.count).to eq(0)
+    end
+
+  end
 end
