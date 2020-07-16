@@ -10,6 +10,7 @@ class User < ApplicationRecord
             
   has_many :note_users
   has_many :notes, through: :note_users
+  
   has_many :user_cohorts
   has_many :cohorts, through: :user_cohorts
 

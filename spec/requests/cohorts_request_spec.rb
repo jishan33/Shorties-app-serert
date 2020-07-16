@@ -78,5 +78,26 @@ RSpec.describe "Cohorts", type: :request do
         expect(Cohort.find(@cohort.id).name).to eq(@updated_name)
       end
     end
+
+    context "when the params in invalid" do
+      before(:example) do
+        @cohort = create(:cohort)
+        put "/cohorts/#{@cohort.id}", params: { cohort: { name: nil } }, headers: authenticated_header
+        @json_response = JSON.parse(response.body)
+                
+
+      end
+
+      
+
+      it "returns a unprocessable entity response" do
+        expect(response).to have_http_status(:unprocessable_entity)
+        
+      end
+
+      it "has the correct number of errors" do
+        expect(@json_response["errors"].count).to eq(1)
+      end
+    end
   end
 end
