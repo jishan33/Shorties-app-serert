@@ -63,5 +63,40 @@ RSpec.describe "Categories", type: :request do
     end
   end
 
+  describe 'PUT #update' do
+    context 'when the params are valid' do
+      before(:example) do
+        @category = create(:category)
+        @updated_name = 'Updated category name'
+        put "/categories/#{@category.id}", params: { category: { name: @updated_name } }
+      end
+
+      it 'has a http no content response status' do
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'updates the category in the database' do
+        expect(Category.find(@category.id).name).to eq(@updated_name)
+      end
+    end
+
+    context 'when the params are invalid' do
+      before(:example) do
+        @category = create(:category)
+        put "/categories/#{@category.id}", params: { category: { name: nil } }
+        @json_response = JSON.parse(response.body)
+      end
+
+      it 'returns a unprocessable entity response' do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'has the correct number of errors' do
+        expect(@json_response['errors'].count).to eq(2)
+      end
+    end
+  end
+
+
 
 end
