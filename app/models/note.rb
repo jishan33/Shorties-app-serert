@@ -11,6 +11,7 @@ class Note < ApplicationRecord
 
   belongs_to :user
   has_many :note_users
+  has_many :users, through: :note_users
 
   has_many :category_notes
   has_many :categories, through: :category_notes

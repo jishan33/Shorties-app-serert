@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   
   resources :notes
+
+  resources :cohorts
+
   resources :categories, only: [:index, :create, :update]
+
   post "/login", to: "user_token#create"
   get "/status", to: "status#index"
   get "/status/user", to: "status#user"
