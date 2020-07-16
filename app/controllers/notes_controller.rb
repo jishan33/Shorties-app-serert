@@ -16,9 +16,13 @@ class NotesController < ApplicationController
     end
   end
 
+  def show
+    render json: @note
+  end
+
   def update
     if @note.update(note_params)
-      render json: {}, status: :no_content
+      render json: "Post updated", status: :no_content
     else
       render json: { errors: @note.errors.full_messages }, status: :unprocessable_entity
     end
@@ -26,7 +30,7 @@ class NotesController < ApplicationController
 
   def destroy
     @note.delete
-    render json: {}, status: :no_content
+    render json: "post deleted", status: :no_content
   end
 
   private
