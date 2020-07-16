@@ -1,5 +1,5 @@
 class CohortsController < ApplicationController
-   before_action :set_cohort, only: [:show, :update, :destroy]
+  before_action :set_cohort, only: [:show, :update, :destroy]
 
   # add authentication in the create to limit that only user (is_teacher true ) can do the create and update and delete
   def index
@@ -17,11 +17,12 @@ class CohortsController < ApplicationController
     end
   end
 
-   def show
+  def show
     render json: @cohort
   end
 
   def update
+    @cohort.user = current_user
     if @cohort.update(cohort_params)
       render json: "cohort updated", status: :no_content
     else
