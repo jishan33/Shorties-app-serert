@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # validates :email, presence: true, uniqueness: { case_sensitive: false }
 
   validates :email, presence: true,
-            format: { with: /(.+)@(.+)/, message: "Email invalid"  }, 
+            format: { with: /(.+)@(.+)/, message: "Invalid email"  }, 
             uniqueness: true 
             
   has_many :note_users
