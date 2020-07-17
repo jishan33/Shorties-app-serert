@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   before_action :find_user, only: [:update, :destroy]
   before_action :authenticate_user, only: [:update, :destroy]
-   def create
+
+  def create
     user = User.new(user_params)
     if user.save
       render json: {}, status: :created
@@ -15,20 +16,25 @@ class UsersController < ApplicationController
       render json: {}, status: :no_content
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-    end 
+    end
   end
 
   def destroy
-    if @user.destroy
-      render json: {}, status: :no_content
+    if @user.id = current_user.id
+      @user.destroy
+      render json: "User deleted", status: :no_content
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-    end 
+    end
   end
 
-  private 
+  private
 
-  def user_params 
+  def user_params
     params.require(:user).permit(:email, :password, :username, :is_teacher)
-  end 
+  end
+
+  def find_user
+    @user = User.find(params[:id])
+  end
 end

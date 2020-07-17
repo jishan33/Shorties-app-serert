@@ -106,10 +106,12 @@ RSpec.describe "Notes", type: :request do
     before(:example) do
       @note = create(:note)
       delete "/notes/#{@note.id}", headers: authenticated_header
+      
     end
 
     it "has a http no content response status" do
       expect(response).to have_http_status(:no_content)
+      
     end
 
     it "has the correct number of trails" do

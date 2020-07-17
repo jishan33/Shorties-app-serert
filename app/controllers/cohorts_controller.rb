@@ -1,5 +1,6 @@
 class CohortsController < ApplicationController
   before_action :set_cohort, only: [:show, :update, :destroy]
+   before_action :authenticate_user, only: %i[create update destroy]
 
   # add authentication in the create to limit that only user (is_teacher true ) can do the create and update and delete
   def index
