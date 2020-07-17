@@ -16,6 +16,8 @@ class Note < ApplicationRecord
   has_many :category_notes, dependent: :delete_all
   has_many :categories, through: :category_notes
 
+  has_many_attached :pictures
+
 
 
 

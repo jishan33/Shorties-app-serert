@@ -37,7 +37,7 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.require(:note).permit(:title, :body, :completed, :public_share)
+    params.require(:note).permit(:title, :body, :completed, :public_share, :pictures)
   end
 
   def set_note
