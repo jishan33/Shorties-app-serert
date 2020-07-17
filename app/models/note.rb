@@ -8,7 +8,7 @@ class Note < ApplicationRecord
   validates :public_share, inclusion: [true, false] 
   validates :completed, inclusion: [true, false] 
   
-
+  belongs_to :user
   has_many :note_users
   has_many :users, through: :note_users
 
