@@ -9,7 +9,9 @@ class User < ApplicationRecord
             uniqueness: true 
             
   has_many :note_users
-  has_many :notes, through: :note_users
+
+  has_many :shared_notes, through: :note_users, class_name: "Note"
+  has_many :notes
   
   has_many :user_cohorts
   has_many :cohorts, through: :user_cohorts
