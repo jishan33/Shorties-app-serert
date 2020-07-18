@@ -1,17 +1,18 @@
 class CategoriesController < ApplicationController
   before_action :find_category, only: [:update]
+
   def index
     categories = Category.all
     render json: { categories: categories }
   end
 
   def create
-    category = Category.new(category_params)
-    if category.save
-      render json: {}, status: :created
+    category = Category.find_by(name: category_params[:name])
+    if category
+      render json: category
     else
-      render json: { errors: category.errors.full_messages },
-             status: :unprocessable_entity
+      category = Category.create(category_params)
+      render json: category
     end
   end
 
@@ -25,6 +26,7 @@ class CategoriesController < ApplicationController
   end
 
   private
+
   def category_params
     params.require(:category).permit(:name)
   end

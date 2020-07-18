@@ -8,7 +8,10 @@ class NotesController < ApplicationController
   end
 
   def create
-    note = current_user.notes.create(note_params)
+    category = Category.find(note_params[:category_id])
+    note = current_user.notes.create(note_params.except(:category_id))
+    note.categories << category
+
     if note.save
       render json: note, status: 200
     else
@@ -36,7 +39,8 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.require(:note).permit(:title, :body, :completed, :public_share, :pictures)
+    params
+      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, :category_id)
   end
 
   def set_note
