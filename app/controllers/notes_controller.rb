@@ -1,17 +1,19 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: %i[create update destroy]
+  before_action :authenticate_user
 
   def index
-    notes = Note.all
-    render json: { notes: notes }, status: 200
+    notes = current_user.notes.all.order(id: "asc")
+    render json: notes, status: 200
   end
 
   def create
-    note = Note.new(note_params)
-    note.user = current_user
+    category = Category.find(note_params[:category_id])
+    note = current_user.notes.create(note_params.except(:category_id))
+    note.categories << category
+
     if note.save
-      render json: {}, status: :created
+      render json: note, status: 200
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
@@ -37,7 +39,8 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.require(:note).permit(:title, :body, :completed, :public_share, :pictures)
+    params
+      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, :category_id)
   end
 
   def set_note
