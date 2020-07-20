@@ -9,10 +9,10 @@ class CategoriesController < ApplicationController
   def create
     category = Category.find_by(name: category_params[:name])
     if category
-      render json: category
+      render json: category, status: :no_content
     else
       category = Category.create(category_params)
-      render json: category
+      render json: category, status: :created
     end
   end
 

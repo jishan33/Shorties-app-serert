@@ -1,43 +1,57 @@
 require "rails_helper"
 
+
 RSpec.describe "Notes", type: :request do
   describe "GET #index" do
     before(:example) do
-      @first_note = create(:note)
-      @second_note = create(:note)
-      get "/notes"
+      @user = create(:user)
+      @first_note = create(:note, user: @user)
+      get "/notes",  headers: authenticated_header(@user)
       @json_response = JSON.parse(response.body)
+     
     end
 
     it "returns http success" do
-      expect(response).to have_http_status(:success)
+     expect(response).to have_http_status(:success)
+    
     end
 
     it "JSON response contains the correct number of entries" do
-      expect(@json_response["notes"].count).to eq(2)
+      expect(@json_response.count).to eq(1)
+      
+     
     end
 
+       
     it "JSON response body contains expected attributes" do
-      expect(@json_response["notes"][0]).to include({
-        "id" => @first_note.id,
-        "title" => @first_note.title,
+      expect(@json_response[0]).to include(
         "body" => @first_note.body,
-        "public_share" => @first_note.public_share,
         "completed" => @first_note.completed,
-      })
+        "created_at"=>@first_note.created_at.strftime("%Y-%m-%dT%R:%S.%LZ"),
+        "id" => @first_note.id,
+        "public_share" => @first_note.public_share,
+        "title" => @first_note.title,
+        "updated_at" =>@first_note.updated_at.strftime("%Y-%m-%dT%R:%S.%LZ"),
+        "user_id" =>@first_note.user_id
+      )   
     end
   end
 
   describe "POST #create" do
     context "when the note is valid" do
       before(:example) do
-        @note_params = attributes_for(:note)
+        @user = create(:user)
+        @category=create(:category)
+        category_id = @category.id
+        @note_params = attributes_for(:note, category_id: category_id)
+       
         post "/notes", params: { note: @note_params },
-                       headers: authenticated_header
+                       headers: authenticated_header(@user)            
       end
 
       it "returns http created" do
         expect(response).to have_http_status(:created)
+        
       end
 
       it "save the Note to the database" do
@@ -47,8 +61,11 @@ RSpec.describe "Notes", type: :request do
 
     context "when the Note has invalid attributes" do
       before(:example) do
-        @note_params = attributes_for(:note, :invalid)
-        post "/notes", params: { note: @note_params }, headers: authenticated_header
+        @user = create(:user)
+        @category = create(:category)
+        category_id=@category.id
+        @note_params = attributes_for(:note, :invalid, category_id: category_id)
+        post "/notes", params: { note: @note_params }, headers: authenticated_header(@user)
         @json_response = JSON.parse(response.body)
       end
 
