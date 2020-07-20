@@ -13,7 +13,7 @@ class Note < ApplicationRecord
   has_many :note_users, dependent: :delete_all
   has_many :users, through: :note_users
 
-  has_many :category_notes, dependent: :delete_all
+  has_many :category_notes, dependent: :delete_all, validate: false
   has_many :categories, through: :category_notes
 
   has_many_attached :pictures

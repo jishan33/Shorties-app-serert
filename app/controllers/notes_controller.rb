@@ -32,7 +32,7 @@ class NotesController < ApplicationController
   end
 
   def destroy
-    @note.delete
+    @note.destroy
     render json: "post deleted", status: :no_content
   end
 
