@@ -6,6 +6,7 @@ FactoryBot.define do
     body { "test-body" }
     public_share { false }
     completed { false }
+   
 
     association :user
 

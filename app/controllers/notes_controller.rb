@@ -13,7 +13,7 @@ class NotesController < ApplicationController
     note.categories << category
 
     if note.save
-      render json: note, status: 200
+      render json: note, status: 201
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
