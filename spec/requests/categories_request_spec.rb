@@ -14,11 +14,11 @@ RSpec.describe "Categories", type: :request do
     end
 
     it "JSON response contains the correct number of entries" do
-      expect(@json_response["categories"].count).to eq(2)
+      expect(@json_response.count).to eq(2)
     end
 
     it "JSON response body contains expected attributes" do
-      expect(@json_response["categories"][0]).to include({
+      expect(@json_response[0]).to include({
         "id" => @first_category.id,
         "name" => @first_category.name,
       })
