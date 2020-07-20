@@ -14,11 +14,11 @@ RSpec.describe "Categories", type: :request do
     end
 
     it "JSON response contains the correct number of entries" do
-      expect(@json_response["categories"].count).to eq(2)
+      expect(@json_response.count).to eq(2)
     end
 
     it "JSON response body contains expected attributes" do
-      expect(@json_response["categories"][0]).to include({
+      expect(@json_response[0]).to include({
         "id" => @first_category.id,
         "name" => @first_category.name,
       })
@@ -28,8 +28,8 @@ RSpec.describe "Categories", type: :request do
   describe "POST #create" do
     context "when the category is valid" do
       before(:example) do
-        @category_params = attributes_for(:category)
-        post "/categories", params: { category: @category_params }
+        @category_params = [attributes_for(:category)]
+        post "/categories", params: { categories: @category_params }
       end
 
       it "returns http created" do
@@ -37,7 +37,7 @@ RSpec.describe "Categories", type: :request do
       end
 
       it "saves the category to the database" do
-        expect(Category.last.name).to eq(@category_params[:name])
+        expect(Category.last.name).to eq(@category_params.last[:name])
       end
     end
 

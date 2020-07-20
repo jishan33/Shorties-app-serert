@@ -3,17 +3,19 @@ class CategoriesController < ApplicationController
 
   def index
     categories = Category.all
-    render json: { categories: categories }
+    render json:  categories 
   end
 
   def create
-    category = Category.find_by(name: category_params[:name])
-    if category
-      render json: category, status: :no_content
-    else
-      category = Category.create(category_params)
-      render json: category, status: :created
-    end
+    return_categories = []
+    categories_params.each { |c|
+      category = Category.find_by(name: c[:name])
+      category = Category.create(c) if category.nil?
+
+      return_categories << category
+    }
+
+    render json: return_categories, status: 201
   end
 
   def update
@@ -29,6 +31,10 @@ class CategoriesController < ApplicationController
 
   def category_params
     params.require(:category).permit(:name)
+  end
+
+  def categories_params
+    params.require(:categories).map { |c| c.permit(:name) }
   end
 
   def find_category

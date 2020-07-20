@@ -8,9 +8,13 @@ class NotesController < ApplicationController
   end
 
   def create
-    category = Category.find(note_params[:category_id])
-    note = current_user.notes.create(note_params.except(:category_id))
-    note.categories << category
+  # get the whole object of the found categories
+    categories = note_params[:category_ids].map { |id| Category.find(id) }
+    
+    note = current_user.notes.create(note_params.except(:category_ids))
+
+    #put the categories on the note and rails will create the join table
+    note.categories = categories
 
     if note.save
       render json: note, status: 201
@@ -40,7 +44,7 @@ class NotesController < ApplicationController
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, :category_id)
+      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, category_ids: [])
   end
 
   def set_note

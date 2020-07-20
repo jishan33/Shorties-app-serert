@@ -43,7 +43,7 @@ RSpec.describe "Notes", type: :request do
         @user = create(:user)
         @category=create(:category)
         category_id = @category.id
-        @note_params = attributes_for(:note, category_id: category_id)
+        @note_params = attributes_for(:note, category_ids: [category_id])
        
         post "/notes", params: { note: @note_params },
                        headers: authenticated_header(@user)            
@@ -64,7 +64,7 @@ RSpec.describe "Notes", type: :request do
         @user = create(:user)
         @category = create(:category)
         category_id=@category.id
-        @note_params = attributes_for(:note, :invalid, category_id: category_id)
+        @note_params = attributes_for(:note, :invalid, category_ids: [category_id])
         post "/notes", params: { note: @note_params }, headers: authenticated_header(@user)
         @json_response = JSON.parse(response.body)
       end
