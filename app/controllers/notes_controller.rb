@@ -4,7 +4,7 @@ class NotesController < ApplicationController
 
   def index
     notes = current_user.notes.all.order(id: "asc")
-    render json: notes, status: 200
+    render json: { notes, status: 200
   end
 
   def create
@@ -17,7 +17,11 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
-      render json: note, status: 201
+      if note.params[:pictures]
+        render json: { note: note, url_for(note.pictures) }, status: 201
+      else
+        render json: { note: note, pictures: [] }, status: :201
+      end
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
@@ -44,10 +48,20 @@ class NotesController < ApplicationController
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, category_ids: [])
+      .require(:note).permit(:title, :body, :completed, :public_share, :pictures: [], category_ids: [])
   end
 
   def set_note
     @note = Note.find(params[:id])
+  end
+
+  def generate_pictures_urls(notes)
+    note.map do |note|
+      if note.pictures.attached?
+        note.attributes.merge(pictures: url_for(note.pictures))
+      else
+        note
+      end
+    end
   end
 end
