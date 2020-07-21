@@ -3,8 +3,8 @@ class NotesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    notes = current_user.notes.all.order(id: "asc")
-    render json: notes, status: 200
+    notes = current_user.notes.includes(:categories).all.order(id: "asc")
+    render json: notes, status: 200, include: :categories
   end
 
   def create
@@ -25,10 +25,6 @@ class NotesController < ApplicationController
 
   def show
     render json: @note
-  end
-
-  def show_categories
-    render json: @note.categories
   end
 
   def update

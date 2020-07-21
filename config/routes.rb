@@ -7,8 +7,6 @@ Rails.application.routes.draw do
   resources :categories, only: [:index, :create, :update]
 
   resources :users, only: [:update, :destroy]
-
-  get "/notes/:id/show_categories", to: "notes#show_categories"
   
   post "/login", to: "user_token#create"
   get "/status", to: "status#index"
