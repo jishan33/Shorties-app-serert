@@ -24,7 +24,7 @@ class NotesController < ApplicationController
   end
 
   def show
-    render json: @note
+    render json: @note.categories
   end
 
   def update
