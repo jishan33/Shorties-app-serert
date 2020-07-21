@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :show_categories, :update, :destroy]
+  before_action :set_note, only: [:show, :update, :destroy]
   before_action :authenticate_user
 
   def index
@@ -17,14 +17,14 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
-      render json: note, status: 201
+      render json: note, status: 201, include: :categories
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @note
+    render json: @note, include: :categories
   end
 
   def update
@@ -48,6 +48,6 @@ class NotesController < ApplicationController
   end
 
   def set_note
-    @note = Note.find(params[:id])
+    @note = Note.includes(:categories).find(params[:id])
   end
 end
