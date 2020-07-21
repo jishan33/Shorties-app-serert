@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :update, :destroy]
+  before_action :set_note, only: [:show, :show_categories, :update, :destroy]
   before_action :authenticate_user
 
   def index
@@ -24,6 +24,10 @@ class NotesController < ApplicationController
   end
 
   def show
+    render json: @note
+  end
+
+  def show_categories
     render json: @note.categories
   end
 
