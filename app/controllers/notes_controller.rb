@@ -10,7 +10,9 @@ class NotesController < ApplicationController
 
   def create
   # get the whole object of the found categories
-    categories = note_params[:category_ids].map { |id| Category.find(id) }
+ 
+    require 'json'
+    categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
     
     note = current_user.notes.create(note_params.except(:category_ids))
 
@@ -56,7 +58,7 @@ class NotesController < ApplicationController
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :picture, category_ids: [])
+      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids)
   end
 
   def set_note
