@@ -3,8 +3,9 @@ class NotesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    notes = current_user.notes.all.order(id: "asc")
-    render json: { notes, status: 200
+    # notes = current_user.notes.all.order(id: "asc")
+    notes = current_user.notes.with_attached_picture
+    render json: { notes: generate_picture_urls(notes) }, status: 200
   end
 
   def create
@@ -17,10 +18,10 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
-      if note.params[:pictures]
-        render json: { note: note, url_for(note.pictures) }, status: 201
+      if note_params[:picture]
+        render json: { note: note, picture: url_for(note.picture) }, status: 201
       else
-        render json: { note: note, pictures: [] }, status: :201
+        render json: { note: note, picture: "" }, status: 201
       end
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
@@ -44,24 +45,33 @@ class NotesController < ApplicationController
     render json: "post deleted", status: :no_content
   end
 
+  def update_picture
+    @note.picture.purge
+    @note.picture.attach(note_params[:picture])
+    render json: url_for(@note.picture)
+  end
+
+
   private
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :pictures: [], category_ids: [])
+      .require(:note).permit(:title, :body, :completed, :public_share, :picture, category_ids: [])
   end
 
   def set_note
     @note = Note.find(params[:id])
   end
 
-  def generate_pictures_urls(notes)
-    note.map do |note|
-      if note.pictures.attached?
-        note.attributes.merge(pictures: url_for(note.pictures))
+  def generate_picture_urls(notes)
+    notes.map do |note|
+      if note.picture.attached?
+        note.attributes.merge(picture: url_for(note.picture))
       else
         note
       end
     end
   end
+
+
 end
