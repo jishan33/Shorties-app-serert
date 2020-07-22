@@ -4,8 +4,8 @@ class NotesController < ApplicationController
 
   def index   
    #notes = current_user.notes.includes(:categories).all.order(id: "asc")
-    notes = current_user.notes.with_attached_picture
-    render json: { notes: generate_picture_urls(notes) }, status: 200
+    notes = current_user.notes.with_attached_picture.includes(:categories)
+    render json: { notes: generate_picture_urls(notes) }, status: 200, include: :categories
 
   end
 
