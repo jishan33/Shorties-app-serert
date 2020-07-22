@@ -21,7 +21,7 @@ class NotesController < ApplicationController
     if note.save
 
       if note_params[:picture]
-        render json: { note: note, picture: url_for(note.picture) }, status: 201
+        render json: { note: note, picture: url_for(note.picture) }, status: 201, include: :categories
       else
         render json: { note: note, picture: "" }, status: 201, include: :categories
       end
