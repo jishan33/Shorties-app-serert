@@ -3,8 +3,8 @@ class NotesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    notes = current_user.notes.all.order(id: "asc")
-    render json: notes, status: 200
+    notes = current_user.notes.includes(:categories).all.order(id: "asc")
+    render json: notes, status: 200, include: :categories
   end
 
   def create
@@ -17,14 +17,14 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
-      render json: note, status: 201
+      render json: note, status: 201, include: :categories
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @note.categories
+    render json: @note, include: :categories
   end
 
   def update
@@ -48,6 +48,6 @@ class NotesController < ApplicationController
   end
 
   def set_note
-    @note = Note.find(params[:id])
+    @note = Note.includes(:categories).find(params[:id])
   end
 end

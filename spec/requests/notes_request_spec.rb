@@ -18,8 +18,6 @@ RSpec.describe "Notes", type: :request do
 
     it "JSON response contains the correct number of entries" do
       expect(@json_response.count).to eq(1)
-      
-     
     end
 
        
@@ -32,7 +30,8 @@ RSpec.describe "Notes", type: :request do
         "public_share" => @first_note.public_share,
         "title" => @first_note.title,
         "updated_at" =>@first_note.updated_at.strftime("%Y-%m-%dT%R:%S.%LZ"),
-        "user_id" =>@first_note.user_id
+        "user_id" =>@first_note.user_id,
+        "categories" => @first_note.categories
       )   
     end
   end
