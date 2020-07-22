@@ -2,45 +2,58 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :update, :destroy]
   before_action :authenticate_user
 
-  def index   
-   #notes = current_user.notes.includes(:categories).all.order(id: "asc")
-    notes = current_user.notes.with_attached_picture.includes(:categories)
-    render json: { notes: generate_picture_urls(notes) }, status: 200, include: :categories
+  def index
+    #notes = current_user.notes.includes(:categories).all.order(id: "asc")
+    notes = current_user.notes.map do |note|
+      note_hash(note)
+    end
 
+    render json: { notes: notes }, status: 200
   end
 
   def create
-  # get the whole object of the found categories   
+    # get the whole object of the found categories
     categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
-    
+
     note = current_user.notes.create(note_params.except(:category_ids))
 
     #put the categories on the note and rails will create the join table
     note.categories = categories
 
     if note.save
-
       if note_params[:picture]
-        render json: { note: note, picture: url_for(note.picture) }, status: 201, include: :categories
+        render json: { note: note_hash(note), picture: url_for(note.picture) }, status: 201
       else
-        render json: { note: note, picture: "" }, status: 201, include: :categories
+        render json: { note: note_hash(note), picture: "" }, status: 201
       end
-
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @note, include: :categories
+    render json: @note
   end
 
   def update
-    if @note.update(note_params)
-      render json: "Post updated", status: :no_content
+    categories = note_params[:categories_attributes].map { |c|
+      Category.find_by(name: c[:name]) || Category.create(c)
+    }
+
+    if @note.update(note_params.except(:categories_attributes))
+      @note.categories = categories
+      @note.save
+      render json: note_hash(@note), status: 200
     else
       render json: { errors: @note.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def note_hash(note)
+    note_hash = note.attributes
+    note_hash[:categories] = note.categories
+    note_hash[:picture] = url_for(note.picture) if note.picture.attached?
+    note_hash
   end
 
   def destroy
@@ -54,27 +67,14 @@ class NotesController < ApplicationController
     render json: url_for(@note.picture)
   end
 
-
   private
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids)
+      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids, categories_attributes: [:id, :name])
   end
 
   def set_note
     @note = Note.includes(:categories).find(params[:id])
   end
-
-  def generate_picture_urls(notes)
-    notes.map do |note|
-      if note.picture.attached?
-        note.attributes.merge(picture: url_for(note.picture))
-      else
-        note
-      end
-    end
-  end
-
-
 end

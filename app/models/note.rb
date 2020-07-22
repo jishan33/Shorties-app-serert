@@ -15,6 +15,7 @@ class Note < ApplicationRecord
 
   has_many :category_notes, dependent: :delete_all, validate: false
   has_many :categories, through: :category_notes
+  accepts_nested_attributes_for :categories
 
   has_one_attached :picture
 
