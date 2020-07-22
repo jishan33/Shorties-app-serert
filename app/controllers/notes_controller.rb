@@ -13,8 +13,8 @@ class NotesController < ApplicationController
 
   def create
     # get the whole object of the found categories
+   
     categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
-
     note = current_user.notes.create(note_params.except(:category_ids))
 
     #put the categories on the note and rails will create the join table
