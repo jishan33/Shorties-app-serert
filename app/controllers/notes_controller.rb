@@ -2,14 +2,16 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :update, :destroy]
   before_action :authenticate_user
 
-  def index
-    notes = current_user.notes.includes(:categories).all.order(id: "asc")
-    render json: notes, status: 200, include: :categories
+  def index   
+   #notes = current_user.notes.includes(:categories).all.order(id: "asc")
+    notes = current_user.notes.with_attached_picture
+    render json: { notes: generate_picture_urls(notes) }, status: 200
+
   end
 
   def create
-  # get the whole object of the found categories
-    categories = note_params[:category_ids].map { |id| Category.find(id) }
+  # get the whole object of the found categories   
+    categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
     
     note = current_user.notes.create(note_params.except(:category_ids))
 
@@ -17,7 +19,13 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
-      render json: note, status: 201, include: :categories
+
+      if note_params[:picture]
+        render json: { note: note, picture: url_for(note.picture) }, status: 201
+      else
+        render json: { note: note, picture: "" }, status: 201, include: :categories
+      end
+
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
@@ -40,14 +48,33 @@ class NotesController < ApplicationController
     render json: "post deleted", status: :no_content
   end
 
+  def update_picture
+    @note.picture.purge
+    @note.picture.attach(note_params[:picture])
+    render json: url_for(@note.picture)
+  end
+
+
   private
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :pictures, category_ids: [])
+      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids)
   end
 
   def set_note
     @note = Note.includes(:categories).find(params[:id])
   end
+
+  def generate_picture_urls(notes)
+    notes.map do |note|
+      if note.picture.attached?
+        note.attributes.merge(picture: url_for(note.picture))
+      else
+        note
+      end
+    end
+  end
+
+
 end
