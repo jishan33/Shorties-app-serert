@@ -2,10 +2,11 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :update, :destroy]
   before_action :authenticate_user
 
-  def index
-    # notes = current_user.notes.all.order(id: "asc")
+  def index   
+   #notes = current_user.notes.includes(:categories).all.order(id: "asc")
     notes = current_user.notes.with_attached_picture
     render json: { notes: generate_picture_urls(notes) }, status: 200
+
   end
 
   def create
@@ -18,18 +19,20 @@ class NotesController < ApplicationController
     note.categories = categories
 
     if note.save
+
       if note_params[:picture]
         render json: { note: note, picture: url_for(note.picture) }, status: 201
       else
-        render json: { note: note, picture: "" }, status: 201
+        render json: { note: note, picture: "" }, status: 201, include: :categories
       end
+
     else
       render json: { errors: note.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @note
+    render json: @note, include: :categories
   end
 
   def update
@@ -60,7 +63,7 @@ class NotesController < ApplicationController
   end
 
   def set_note
-    @note = Note.find(params[:id])
+    @note = Note.includes(:categories).find(params[:id])
   end
 
   def generate_picture_urls(notes)

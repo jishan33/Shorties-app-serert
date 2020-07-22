@@ -19,6 +19,7 @@ class CategoriesController < ApplicationController
   end
 
   def update
+
     if @category.update(category_params)
       render json: {}, status: :no_content
     else
