@@ -13,7 +13,7 @@ class NotesController < ApplicationController
 
   def create
     # get the whole object of the found categories
-   
+
     categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
     note = current_user.notes.create(note_params.except(:category_ids))
 
@@ -35,14 +35,20 @@ class NotesController < ApplicationController
     render json: @note
   end
 
+ 
+
   def update
-    categories = note_params[:categories_attributes].map { |c|
+    categories_list = JSON.parse(note_params[:categories_attributes])
+
+    categories = categories_list.map { |c|
       Category.find_by(name: c[:name]) || Category.create(c)
     }
 
     if @note.update(note_params.except(:categories_attributes))
       @note.categories = categories
+      update_picture(@note)
       @note.save
+
       render json: note_hash(@note), status: 200
     else
       render json: { errors: @note.errors.full_messages }, status: :unprocessable_entity
@@ -61,17 +67,17 @@ class NotesController < ApplicationController
     render json: "post deleted", status: :no_content
   end
 
-  def update_picture
-    @note.picture.purge
-    @note.picture.attach(note_params[:picture])
-    render json: url_for(@note.picture)
+  def update_picture(note)
+    # note.picture.purge
+    note.picture.attach(note_params[:picture])
+    # render json: url_for(@note.picture)
   end
 
   private
 
   def note_params
     params
-      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids, categories_attributes: [:id, :name])
+      .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids, :categories_attributes)
   end
 
   def set_note
