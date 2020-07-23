@@ -5,14 +5,14 @@ class CohortsController < ApplicationController
   # add authentication in the create to limit that only user (is_teacher true ) can do the create and update and delete
   def index
     cohorts = Cohort.all
-    render json: { cohort: cohorts }, status: 200
+    render json: { cohorts: cohorts }, status: 200
   end
 
   def create
     cohort = Cohort.new(cohort_params)
     cohort.user = current_user
     if cohort.save
-      render json: "cohort created", status: :created
+      render json: { cohort: cohort }, status: :created
     else
       render json: { errors: cohort.errors.full_messages }, status: :unprocessable_entity
     end

@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   get "/status/user", to: "status#user"
   post "/sign-up", to: "users#create"
   root to: "notes#index"
+  get "/users", to: "users#index"
 end
