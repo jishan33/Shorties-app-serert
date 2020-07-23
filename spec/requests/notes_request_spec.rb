@@ -84,8 +84,11 @@ RSpec.describe "Notes", type: :request do
         @note = create(:note)
         @category = create(:category)
         @updated_body = "Updated body"
-
-        put "/notes/#{@note.id}", params: { note: { body: @updated_body, categories_attributes: [@category.id, @category.name] } }, headers: authenticated_header
+        put "/notes/#{@note.id}", params: { 
+          note: { 
+            body: @updated_body, 
+            categories_attributes: [@category].to_json } 
+            }, headers: authenticated_header
       end
 
       it "has a http no content response status" do
@@ -101,7 +104,7 @@ RSpec.describe "Notes", type: :request do
       before(:example) do
         @category = create(:category)
         @note = create(:note)
-        put "/notes/#{@note.id}", params: { note: { title: nil, categories_attributes: [@category.id, @category.name] } }, headers: authenticated_header
+        put "/notes/#{@note.id}", params: { note: { title: nil, categories_attributes: [@category].to_json } }, headers: authenticated_header
         @json_response = JSON.parse(response.body)
       end
 
