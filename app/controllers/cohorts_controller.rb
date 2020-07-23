@@ -19,7 +19,7 @@ class CohortsController < ApplicationController
   end
 
   def show
-    render json: @cohort
+    render json: @cohort 
   end
 
   def update
