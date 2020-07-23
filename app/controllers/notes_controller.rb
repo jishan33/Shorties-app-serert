@@ -35,18 +35,14 @@ class NotesController < ApplicationController
     render json: @note
   end
 
- 
-
   def update
     categories_list = JSON.parse(note_params[:categories_attributes])
+
     categories = categories_list.map { |c|
       Category.find_by(name: c["name"]) || Category.create(c)
     }
 
-
-
     if @note.update(note_params.except(:categories_attributes, :picture))
-
       @note.categories = categories
       update_picture(@note)
       @note.save
@@ -70,10 +66,14 @@ class NotesController < ApplicationController
   end
 
   def update_picture(note)
-    return if url_for(note.picture) == note_params[:picture]
-    # note.picture.purge
-    note.picture.attach(note_params[:picture])
-    # render json: url_for(@note.picture)
+    if note.picture.attached?
+      if url_for(note.picture) == note_params[:picture]
+      else
+        return
+      end
+    else
+      note.picture.attach(note_params[:picture])
+    end
   end
 
   private
