@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   before_action :find_user, only: [:update, :destroy]
-  before_action :authenticate_user, only: [:update, :destroy]
+  before_action :authenticate_user, only: [:update, :destroy, :index]
+
+  def index
+    users = User.all
+    render json: { users: users }, status: 200
+  end
 
   def create
     user = User.new(user_params)
