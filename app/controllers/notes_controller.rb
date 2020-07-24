@@ -65,15 +65,11 @@ class NotesController < ApplicationController
     render json: "post deleted", status: :no_content
   end
 
-  def update_picture(note)
-    if note.picture.attached?
-      if url_for(note.picture) == note_params[:picture]
-      else
-        return
-      end
-    else
-      note.picture.attach(note_params[:picture])
-    end
+   def update_picture(note)
+    return if note.picture.attached? && url_for(note.picture) == note_params[:picture]
+
+    return if note.picture.nil?
+    note.picture.attach(note_params[:picture])
   end
 
   private
