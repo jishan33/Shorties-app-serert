@@ -12,13 +12,16 @@ class NotesController < ApplicationController
   end
 
   def create
-    # get the whole object of the found categories
+    if note_params[:category_ids].nil?
+      note = current_user.notes.create(note_params.except(:category_ids))
+    else
+      # get the whole object of the found categories
+      categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
+      note = current_user.notes.create(note_params.except(:category_ids))
 
-    categories = JSON.parse(note_params[:category_ids]).map { |id| Category.find(id) }
-    note = current_user.notes.create(note_params.except(:category_ids))
-
-    #put the categories on the note and rails will create the join table
-    note.categories = categories
+      #put the categories on the note and rails will create the join table
+      note.categories = categories
+    end
 
     if note.save
       if note_params[:picture]
@@ -41,11 +44,11 @@ class NotesController < ApplicationController
     categories = categories_list.map { |c|
       Category.find_by(name: c["name"]) || Category.create(c)
     }
-
+     # bug if note has not pic cannot use edit to add pic
     if @note.update(note_params.except(:categories_attributes, :picture))
       @note.categories = categories
+
       update_picture(@note)
-      @note.save
 
       render json: note_hash(@note), status: 200
     else
@@ -65,10 +68,10 @@ class NotesController < ApplicationController
     render json: "post deleted", status: :no_content
   end
 
-   def update_picture(note)
+  def update_picture(note)
+    return if !note.picture.attached? && note[:picture].nil?
     return if note.picture.attached? && url_for(note.picture) == note_params[:picture]
 
-    return if note.picture.nil?
     note.picture.attach(note_params[:picture])
   end
 
