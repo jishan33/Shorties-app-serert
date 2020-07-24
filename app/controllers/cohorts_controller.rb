@@ -9,17 +9,24 @@ class CohortsController < ApplicationController
   end
 
   def create
-    cohort = Cohort.new(cohort_params)
-    cohort.user = current_user
+    if cohort_params[:user_emails]
+      coh_users = cohort_params[:user_emails].map { |email| User.find_by_email(email) }      
+      cohort = current_user.cohorts.create({name: cohort_params[:name]})
+      cohort.users = coh_users
+    else
+      cohort = current_user.cohorts.create({name: cohort_params[:name]})
+    end
+
+
     if cohort.save
-      render json: { cohort: cohort }, status: :created
+      render json: { cohort: cohort }, status: :created, include: :users
     else
       render json: { errors: cohort.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: @cohort 
+    render json: @cohort, include: :users
   end
 
   def update
@@ -39,10 +46,10 @@ class CohortsController < ApplicationController
   private
 
   def cohort_params
-    params.require(:cohort).permit(:name)
+    params.require(:cohort).permit(:name, user_emails: [])
   end
 
   def set_cohort
-    @cohort = Cohort.find(params[:id])
+    @cohort = Cohort.includes(:users).find(params[:id])
   end
 end
