@@ -39,7 +39,7 @@ class CohortsController < ApplicationController
   end
 
   def destroy
-    @cohort.delete
+    @cohort.destroy
     render json: "cohort deleted", status: :no_content
   end
 
