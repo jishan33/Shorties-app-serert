@@ -1,6 +1,6 @@
 class CohortsController < ApplicationController
-  before_action :set_cohort, only: [:show, :update, :destroy]
-   before_action :authenticate_user, only: %i[create update destroy]
+  before_action :set_cohort, only: %i[show update destroy remove_student]
+   before_action :authenticate_user, only: %i[create update destroy remove_student]
 
   # add authentication in the create to limit that only user (is_teacher true ) can do the create and update and delete
   def index
@@ -39,8 +39,13 @@ class CohortsController < ApplicationController
   end
 
   def destroy
-    @cohort.delete
+    @cohort.destroy
     render json: "cohort deleted", status: :no_content
+  end
+
+  def remove_student
+    user = User.find(params[:user_id])
+    @cohort.users.delete(user)
   end
 
   private
