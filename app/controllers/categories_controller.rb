@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   before_action :find_category, only: [:update]
 
   def index
-    categories = Category.all
+    categories = Category.all.order('name')
     render json:  categories 
   end
 
