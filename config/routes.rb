@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   post "/sign-up", to: "users#create"
   root to: "notes#index"
   get "/users", to: "users#index"
+  delete "/cohorts/:cohort_id/users/:user_id", to: "cohorts#remove_student"
 end
