@@ -85,7 +85,8 @@ class NotesController < ApplicationController
   end
 
   def update_picture(note)
-    return if !note.picture.attached? && note[:picture].nil?
+
+    return if !note.picture.attached? && note_params[:picture].nil?
     return if note.picture.attached? && url_for(note.picture) == note_params[:picture]
 
     note.picture.attach(note_params[:picture])
