@@ -1,6 +1,6 @@
 class CohortsController < ApplicationController
   before_action :set_cohort, only: %i[show update destroy remove_student]
-   before_action :authenticate_user, only: %i[create update destroy remove_student]
+  before_action :authenticate_user, only: %i[create update destroy remove_student cohorts_students]
 
   # add authentication in the create to limit that only user (is_teacher true ) can do the create and update and delete
   def index
@@ -10,13 +10,12 @@ class CohortsController < ApplicationController
 
   def create
     if cohort_params[:user_emails]
-      coh_users = cohort_params[:user_emails].map { |email| User.find_by_email(email) }      
-      cohort = current_user.cohorts.create({name: cohort_params[:name]})
+      coh_users = cohort_params[:user_emails].map { |email| User.find_by_email(email) }
+      cohort = current_user.cohorts.create({ name: cohort_params[:name] })
       cohort.users = coh_users
     else
-      cohort = current_user.cohorts.create({name: cohort_params[:name]})
+      cohort = current_user.cohorts.create({ name: cohort_params[:name] })
     end
-
 
     if cohort.save
       render json: { cohort: cohort }, status: :created, include: :users
@@ -27,6 +26,17 @@ class CohortsController < ApplicationController
 
   def show
     render json: @cohort, include: :users
+  end
+
+  def cohorts_students
+    cohort = Cohort.find_by(user: current_user)
+
+    if cohort.nil?
+      render json: []
+    else
+      all_students = cohort.users
+      render json: { all_students: all_students }
+    end
   end
 
   def update

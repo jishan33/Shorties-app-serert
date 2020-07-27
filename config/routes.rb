@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post "/login", to: "user_token#create"
   get "/status", to: "status#index"
   get "/status/user", to: "status#user"
+  get "/cohorts/:id/cohorts_students", to: "cohorts#cohorts_students"
   post "/sign-up", to: "users#create"
   root to: "notes#index"
   get "/users", to: "users#index"
