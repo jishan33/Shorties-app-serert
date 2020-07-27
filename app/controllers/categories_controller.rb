@@ -1,9 +1,25 @@
 class CategoriesController < ApplicationController
-  before_action :find_category, only: [:update]
+  before_action :find_category, only: [:update, :show]
+  before_action :authenticate_user
 
   def index
     categories = Category.all.order('name')
     render json:  categories 
+  end
+
+  def show
+    category_notes = @category.notes.where(user_id: current_user.id)
+    notes = category_notes.map do |note|
+      note_hash(note)
+    end
+    render json: { notes: notes }, status: 200
+  end
+
+  def note_hash(note)
+    note_hash = note.attributes
+    note_hash[:categories] = note.categories
+    note_hash[:picture] = url_for(note.picture) if note.picture.attached?
+    note_hash
   end
 
   def create
