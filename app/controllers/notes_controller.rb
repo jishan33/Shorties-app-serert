@@ -55,6 +55,23 @@ class NotesController < ApplicationController
     end
   end
 
+  def shared
+    return if !(current_user.is_teacher)
+
+    note = Note.find(share_note_params[:note_id])
+    attributes = note_hash(note)
+
+    share_note_params[:student_ids].each do |student_id|
+      student = User.find(student_id)
+
+      new_note = student.notes.create(attributes.except("id", :picture))
+
+      new_note.picture.attach(note.picture.blob) if note.picture.attached?
+
+      new_note.save
+    end
+  end
+
   def note_hash(note)
     note_hash = note.attributes
     note_hash[:categories] = note.categories
@@ -68,7 +85,8 @@ class NotesController < ApplicationController
   end
 
   def update_picture(note)
-    return if !note.picture.attached? && note[:picture].nil?
+
+    return if !note.picture.attached? && note_params[:picture].nil?
     return if note.picture.attached? && url_for(note.picture) == note_params[:picture]
 
     note.picture.attach(note_params[:picture])
@@ -79,6 +97,14 @@ class NotesController < ApplicationController
   def note_params
     params
       .require(:note).permit(:title, :body, :completed, :public_share, :picture, :category_ids, :categories_attributes)
+  end
+
+  def share_note_params
+    array = params.require([:note_id, :student_ids])
+    return {
+             note_id: array[0],
+             student_ids: array[1],
+           }
   end
 
   def set_note

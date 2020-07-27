@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update, :destroy]
   
+  post "/notes/shared_note", to: "notes#shared"
   post "/login", to: "user_token#create"
   get "/status", to: "status#index"
   get "/status/user", to: "status#user"
