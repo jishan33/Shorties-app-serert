@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :cohorts
 
-  resources :categories, only: [:index, :create, :update]
+  resources :categories, only: [:index, :create, :update, :show]
 
   resources :users, only: [:update, :destroy]
   
