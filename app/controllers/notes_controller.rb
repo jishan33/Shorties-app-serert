@@ -44,7 +44,6 @@ class NotesController < ApplicationController
     categories = categories_list.map { |c|
       Category.find_by(name: c["name"]) || Category.create(c)
     }
-     # bug if note has not pic cannot use edit to add pic
     if @note.update(note_params.except(:categories_attributes, :picture))
       @note.categories = categories
 
