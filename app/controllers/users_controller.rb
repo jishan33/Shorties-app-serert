@@ -8,7 +8,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
+    if !verify_recaptcha(response: user_params[:recaptcha_token])
+      render json: { error: "Invalid recaptcha token" }, status: 401
+      return
+    end
+
+    user = User.new(user_params.except(:recaptcha_token))
     if user.save
       render json: {}, status: :created
     else
@@ -36,7 +41,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :username, :is_teacher)
+    params.require(:user).permit(:email, :password, :username, :is_teacher, :recaptcha_token)
   end
 
   def find_user
