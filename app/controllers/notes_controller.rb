@@ -46,7 +46,7 @@ class NotesController < ApplicationController
     }
     if @note.update(note_params.except(:categories_attributes, :picture))
       @note.categories = categories
-  byebug
+ 
       update_picture(@note)
 
       render json: note_hash(@note), status: 200
