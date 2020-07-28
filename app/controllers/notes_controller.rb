@@ -46,7 +46,7 @@ class NotesController < ApplicationController
     }
     if @note.update(note_params.except(:categories_attributes, :picture))
       @note.categories = categories
-
+ 
       update_picture(@note)
 
       render json: note_hash(@note), status: 200
@@ -75,6 +75,7 @@ class NotesController < ApplicationController
   def note_hash(note)
     note_hash = note.attributes
     note_hash[:categories] = note.categories
+
     note_hash[:picture] = url_for(note.picture) if note.picture.attached?
     note_hash
   end
@@ -85,8 +86,11 @@ class NotesController < ApplicationController
   end
 
   def update_picture(note)
-
+    
     return if !note.picture.attached? && note_params[:picture].nil?
+
+    return if !note.picture.attached? && note_params[:picture]=="" || note_params[:picture]=="undefined"
+
     return if note.picture.attached? && url_for(note.picture) == note_params[:picture]
 
     note.picture.attach(note_params[:picture])
