@@ -6,6 +6,6 @@ class StatusController < ApplicationController
   end
 
   def user
-    render json: { user: current_user.email }
+    render json: { user: current_user.email, is_teacher: current_user.is_teacher }
   end
 end
