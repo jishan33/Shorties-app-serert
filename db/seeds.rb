@@ -1,10 +1,10 @@
-teacher_1 = User.create(email: "teacher1@g.com", password: "123456", is_teacher: true, username: "Alice")
+teacher_1 = User.create(email: "teacher1@g.com", password: "shorties730", is_teacher: true, username: "Alice")
 
-teacher_2 = User.create(email: "teacher2@g.com", password: "123456", is_teacher: true, username: "Winter")
+teacher_2 = User.create(email: "teacher2@g.com", password: "shorties2020730", is_teacher: true, username: "Winter")
 
-user_2 = User.create(email: "2@g.com", password: "123", username: "Harry")
+user_2 = User.create(email: "test2@g.com", password: "730test2", username: "Harry")
 
-user_3 = User.create(email: "3@g.com", password: "123", username: "Sam")
+user_3 = User.create(email: "test3@g.com", password: "730test3", username: "Sam")
 
 
 cohort_1 = Cohort.create(name: "Rails", user_id: teacher_1.id) 
