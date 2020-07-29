@@ -3,9 +3,10 @@ require "rails_helper"
 RSpec.describe "Categories", type: :request do
   describe "GET #index" do
     before(:example) do
+      @user = create(:user)
       @first_category = create(:category)
       @last_category = create(:category)
-      get "/categories"
+      get "/categories", headers: authenticated_header(@user)
       @json_response = JSON.parse(response.body)
     end
 
@@ -28,8 +29,9 @@ RSpec.describe "Categories", type: :request do
   describe "POST #create" do
     context "when the category is valid" do
       before(:example) do
+        @user = create(:user)
         @category_params = [attributes_for(:category)]
-        post "/categories", params: { categories: @category_params }
+        post "/categories", params: { categories: @category_params }, headers: authenticated_header(@user)
       end
 
       it "returns http created" do
@@ -46,9 +48,10 @@ RSpec.describe "Categories", type: :request do
   describe "PUT #update" do
     context "when the params are valid" do
       before(:example) do
+        @user=create(:user)
         @category = create(:category)
         @updated_name = "Updated category name"
-        put "/categories/#{@category.id}", params: { category: { name: @updated_name } }
+        put "/categories/#{@category.id}", params: { category: { name: @updated_name } }, headers: authenticated_header
       end
 
       it "has a http no content response status" do
@@ -62,8 +65,9 @@ RSpec.describe "Categories", type: :request do
 
     context "when the params are invalid" do
       before(:example) do
+        @user=create(:user)
         @category = create(:category)
-        put "/categories/#{@category.id}", params: { category: { name: nil } }
+        put "/categories/#{@category.id}", params: { category: { name: nil } }, headers: authenticated_header
         @json_response = JSON.parse(response.body)
       end
 
