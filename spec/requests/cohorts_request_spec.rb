@@ -63,43 +63,43 @@ RSpec.describe "Cohorts", type: :request do
     end
   end
 
-  # describe "PUT #update" do
-  #   context "when the param is valid " do
-  #     before(:example) do
-  #       @cohort = create(:cohort)
-  #       @updated_name = "Updated Cohort"
-  #       put "/cohorts/#{@cohort.id}", params: {
-  #                                   cohort: { name: @updated_name },
-  #                                 }, headers: authenticated_header
-  #     end
-  #     it "has a http no content response status" do
-  #       expect(response).to have_http_status(:no_content)
-  #     end
+  describe "PUT #update" do
+    context "when the param is valid " do
+      before(:example) do
+        @cohort = create(:cohort)
+        @updated_name = "Updated Cohort"
+        put "/cohorts/#{@cohort.id}", params: {
+                                    cohort: { name: @updated_name },
+                                  }, headers: authenticated_header
+      end
+      it "has a http no content response status" do
+        expect(response).to have_http_status(:no_content)
+      end
 
-  #     it "updates the Cohort in the database" do
-  #       expect(Cohort.find(@cohort.id).name).to eq(@updated_name)
-  #     end
-  #   end
+      it "updates the Cohort in the database" do
+        expect(Cohort.find(@cohort.id).name).to eq(@updated_name)
+      end
+    end
 
-  #   context "when the params in invalid" do
-  #     before(:example) do
-  #       @cohort = create(:cohort)
-  #       put "/cohorts/#{@cohort.id}", params: { cohort: { name: nil } }, headers: authenticated_header
-  #       @json_response = JSON.parse(response.body)
+    context "when the params in invalid" do
+      before(:example) do
+        @cohort = create(:cohort)
+        put "/cohorts/#{@cohort.id}", params: { cohort: { name: nil } }, headers: authenticated_header
+        @json_response = JSON.parse(response.body)
                 
 
-  #     end
+      end
 
       
 
-  #     it "returns a unprocessable entity response" do
-  #       expect(response).to have_http_status(:unprocessable_entity)
+      it "returns a unprocessable entity response" do
+        expect(response).to have_http_status(:unprocessable_entity)
         
-  #     end
+      end
 
-  #     it "has the correct number of errors" do
-  #       expect(@json_response["errors"].count).to eq(1)
-  #     end
-  #   end
-  # end
+      it "has the correct number of errors" do
+        expect(@json_response["errors"].count).to eq(1)
+      end
+    end
+  end
 end
