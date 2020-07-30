@@ -1,24 +1,92 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Links 
 
-Things you may want to cover:
+### Link to Website 
 
-* Ruby version
+Client side: https://github.com/IraShy/Shorties-app-client
 
-* System dependencies
+Back end: https://shorties-server.herokuapp.com
 
-* Configuration
+### Link to Repo
 
-* Database creation
+Client side repo: https://github.com/IraShy/Shorties-app-client
 
-* Database initialization
+Server side repo: https://github.com/jishan33/Shorties-app-server
 
-* How to run the test suite
+## Instruction for Setup 
 
-* Services (job queues, cache servers, search engines, etc.)
+### System Dependencies
 
-* Deployment instructions
+#### Rails 
+- rails 6.0.3
+- bundler 2.1.2
 
-* ...
+#### React 
+- react-scripts 3.4.1
+- yarn 1.22.4
+
+### Credentials 
+
+#### Rails
+```
+aws:
+  access_key_id: <secret>
+  secret_access_key: <secret>
+
+recaptcha:
+  site_key: <secret>
+  secret_key: <secret>
+
+```
+
+## Running Code & Tests
+### Rails
+ - To install dependencies `bundle install`
+ - To run the tests `./bin/rspec`
+ - To start the app `rails s`
+
+ ### React
+  - To install dependencies `yarn install`
+  - To run the tests `yarn run e2e`
+  - To start the app `yarn start`
+
+## Libraries 
+
+### Rails 
+ - RSpec 
+ - Factory Bot Rails
+ - Knock
+ - JWTs
+ - Cors
+ - Recaptcha
+ - Aws
+
+ ### React 
+
+ - Context
+ - Cypress 
+ - React Router Dom
+ - React ReCaptcha Google
+ - Lodash
+ - Prop Types
+ - moment
+ - React Bootstrap
+ - Joi browser
+ - React Select
+ - SASS
+ - React Animations
+
+
+ 
+## Link to postman 
+
+  https://documenter.getpostman.com/view/10733565/T1DteFk7?version=latest
+
+
+
+
+
+
+
+
