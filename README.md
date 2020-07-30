@@ -42,14 +42,14 @@ recaptcha:
 
 ## Running Code & Tests
 ### Rails
- - To install dependencies `bundle install`
- - To run the tests `./bin/rspec`
- - To start the app `rails s`
+ - To install dependencies   `bundle install`
+ - To run the tests   `./bin/rspec`
+ - To start the app   `rails s`
 
  ### React
-  - To install dependencies `yarn install`
-  - To run the tests `yarn run e2e`
-  - To start the app `yarn start`
+  - To install dependencies  `yarn install`
+  - To run the tests  `yarn run e2e`
+  - To start the app  `yarn start`
 
 ## Libraries 
 
@@ -229,11 +229,13 @@ Wireframe revision
 
 Generally, tasks were divided mostly as follows:
 
-Jishan worked on authentication-related problems, including form validations and recaptcha; Notes (the most difficult, significant and time-consuming part of the project) - creating, editing, rendering, sharing; it is safe to say that Jishan did substantial part of testing in Rails.
+Jishan worked on authentication-related problems, including form validations and recaptcha; Notes (the most difficult, significant and time-consuming part of the project) - creating, editing, rendering, sharing; and its related Rspec testing in Rails.
 
 Iryna worked on Cohorts and Categories, implemented search feature and image uploading. Iryna did some testing in React and manual testing in development and production.
 
-Styling: team members added styling to the parts they worked on, Jishan polished everything.
+Styling: team members added styling to the parts they worked on, and polished everything together. 
+
+
 
 
 
