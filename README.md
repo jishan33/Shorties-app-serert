@@ -8,6 +8,20 @@ Client side: https://github.com/IraShy/Shorties-app-client
 
 Back end: https://shorties-server.herokuapp.com
 
+### Test users to start test website contents:
+
+teacher Alice:  email: "teacher1@g.com", 
+                password: "shorties730", 
+
+teacher Winter:  email: "teacher2@g.com",
+                 password: "shorties2020730",
+
+student Harry:   email: "test2@g.com",
+                password: "730test2",
+
+student Sam:  email: "test3@g.com", 
+              password: "730test3"
+
 ### Link to Repo
 
 Client side repo: https://github.com/IraShy/Shorties-app-client
