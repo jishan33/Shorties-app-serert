@@ -28,6 +28,9 @@ Client side repo: https://github.com/IraShy/Shorties-app-client
 
 Server side repo: https://github.com/jishan33/Shorties-app-server
 
+### Link to manual testing spreadsheet
+https://docs.google.com/spreadsheets/d/1vV4mRKybSfsh1ajtmJ3ckVwjlnzvinrlzmNVncFHiQI/edit?usp=sharing
+
 ## Instruction for Setup 
 
 ### System Dependencies
