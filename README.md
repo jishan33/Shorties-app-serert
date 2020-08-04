@@ -108,7 +108,7 @@ REACT_APP_BACKEND_URL=http://localhost:3000
  - React Animations
 
 
- 
+
 ## Link to postman 
 
   https://documenter.getpostman.com/view/10733565/T1DteFk7?version=latest
@@ -240,7 +240,7 @@ Wireframe revision
 - Fixed validation & login test. 
 - Created Spreadsheet with test cases for manual testing
 - Iryna executed test cases in development environment, documented bugs
- 
+
  29.07
 - Updated notes styling
 - Added popover and alerts for buttons 
@@ -267,7 +267,7 @@ Styling: team members added styling to the parts they worked on, and polished ev
 
 
 
-# Shorties App
+# Shorties App (Planning Phase)
 
 ![](docs/head-607479_640.jpg)
 
@@ -451,4 +451,4 @@ Day 3, Wednesday 15 July
 
 
 
-
+![]()
